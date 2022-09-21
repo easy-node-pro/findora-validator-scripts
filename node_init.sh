@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-USERNAME=servicefindora
+USERNAME=$USER
 ENV=prod
 NAMESPACE=mainnet
 SERV_URL=https://${ENV}-${NAMESPACE}.${ENV}.findora.org
