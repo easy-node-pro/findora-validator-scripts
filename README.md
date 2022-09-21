@@ -14,11 +14,5 @@ sudo apt update -y && sudo apt install apt-transport-https ca-certificates curl 
 
 Restart your shell session, then grab the script and fire away!
 ```bash
-wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/node_init.sh -O node_init.shell
-```
-
-Run the script after editing `servicefindora` if your username is different:
-
-```bash
-bash -x node_init.sh
+wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/node_init.sh -O node_init.shell && bash -x node_init.sh
 ```
