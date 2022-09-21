@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+USERNAME=servicefindora
 ENV=prod
 NAMESPACE=mainnet
 SERV_URL=https://${ENV}-${NAMESPACE}.${ENV}.findora.org
@@ -56,7 +57,12 @@ fi
 ######################
 wget https://wiki.findora.org/bin/linux/fn && chmod +x fn && sudo mv fn /usr/local/bin/
 
-cd ~/ && export NAMESPACE=mainnet && sudo mkdir -p /data/findora && sudo chown servicefindora:servicefindora /data/findora && mkdir -p /data/findora/mainnet/tendermint/ && export ROOT_DIR=/data/findora/mainnet/ && sudo chown -R servicefindora:servicefindora /data/findora/
+cd ~/
+sudo mkdir -p /data/findora
+sudo chown ${USERNAME}:${USERNAME} /data/findora 
+mkdir -p /data/findora/mainnet/tendermint/ 
+export ROOT_DIR=/data/findora/mainnet/ 
+sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
 
 fn genkey > tmp.gen.keypair
 cp tmp.gen.keypair /data/findora/mainnet/mainnet_node.key
@@ -77,7 +83,7 @@ mkdir -p ${ROOT_DIR}/findorad || exit 1
 
 docker run --rm -v ${ROOT_DIR}/tendermint:/root/.tendermint ${FINDORAD_IMG} init --${NAMESPACE} || exit 1
 
-sudo chown -R servicefindora:servicefindora ${ROOT_DIR}/
+sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/
 
 ###################
 # get snapshot    #
