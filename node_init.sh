@@ -39,6 +39,17 @@ export ROOT_DIR=/data/findora/${NAMESPACE}
 keypath=${ROOT_DIR}/${NAMESPACE}_node.key
 FN=${ROOT_DIR}/bin/fn
 
+wget https://wiki.findora.org/bin/linux/fn && chmod +x fn && sudo mv fn /usr/local/bin/
+
+cd ~/
+sudo mkdir -p /data/findora
+sudo chown ${USERNAME}:${USERNAME} /data/findora 
+mkdir -p /data/findora/mainnet/tendermint/ 
+export ROOT_DIR=/data/findora/mainnet/ 
+sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
+fn genkey > tmp.gen.keypair
+cp tmp.gen.keypair /data/findora/mainnet/mainnet_node.key
+
 check_env
 
 if [[ "Linux" == `uname -s` ]]; then
@@ -55,18 +66,6 @@ fi
 ######################
 # Config local node #
 ######################
-wget https://wiki.findora.org/bin/linux/fn && chmod +x fn && sudo mv fn /usr/local/bin/
-
-cd ~/
-sudo mkdir -p /data/findora
-sudo chown ${USERNAME}:${USERNAME} /data/findora 
-mkdir -p /data/findora/mainnet/tendermint/ 
-export ROOT_DIR=/data/findora/mainnet/ 
-sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
-
-fn genkey > tmp.gen.keypair
-cp tmp.gen.keypair /data/findora/mainnet/mainnet_node.key
-
 node_mnemonic=$(cat ${keypath} | grep 'Mnemonic' | sed 's/^.*Mnemonic:[^ ]* //')
 xfr_pubkey="$(cat ${keypath} | grep 'pub_key' | sed 's/[",]//g' | sed 's/ *pub_key: *//')"
 
