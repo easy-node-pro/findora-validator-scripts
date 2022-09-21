@@ -2,7 +2,7 @@
 Findora Validator Script Repo!
 
 ## ufw.sh
-Firewall settings for using ufw with Findora
+Firewall settings for using ufw with Findora for those of you on Contabo or other providers with software firewalls.
 
 ## node_init.sh
 Easy Node's updated node_init.sh to create a **brand new server with a brand new wallet** in 1 swoop. **Do not run this on a server with your existing files or they will be overwritten!!!**
