@@ -5,7 +5,7 @@ Findora Validator Script Repo!
 Firewall settings for using ufw with Findora
 
 ## node_init.sh
-Easy Node's updated node_init.sh to create a brand new server with wallet in 1 swoop.
+Easy Node's updated node_init.sh to create a **brand new server with a brand new wallet** in 1 swoop. **Do not run this on a server with your existing files or they will be overwritten!!!**
 
 Install docker and configure your user by running following code. If you user isn't `servicefindora` update that to be your username in the following code before running it on your server:
 ```text
