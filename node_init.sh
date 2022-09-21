@@ -17,8 +17,10 @@ check_env() {
     done
 
     if ! [ -f "$keypath" ]; then
-        echo "The key file doesnot exist: $keypath"
-        exit 1
+        echo -e "\nCreating Keypair and copying to mainnet_node.key"
+        fn genkey > tmp.gen.keypair
+        cp tmp.gen.keypair /data/findora/mainnet/mainnet_node.key
+        keypath=${ROOT_DIR}/${NAMESPACE}_node.key
     fi
 }
 
@@ -36,19 +38,13 @@ set_binaries() {
 }
 
 export ROOT_DIR=/data/findora/${NAMESPACE}
-keypath=${ROOT_DIR}/${NAMESPACE}_node.key
-FN=${ROOT_DIR}/bin/fn
-
 wget https://wiki.findora.org/bin/linux/fn && chmod +x fn && sudo mv fn /usr/local/bin/
-
+FN=${ROOT_DIR}/bin/fn
 cd ~/
 sudo mkdir -p /data/findora
-sudo chown ${USERNAME}:${USERNAME} /data/findora 
-mkdir -p /data/findora/mainnet/tendermint/ 
-export ROOT_DIR=/data/findora/mainnet/ 
 sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
-fn genkey > tmp.gen.keypair
-cp tmp.gen.keypair /data/findora/mainnet/mainnet_node.key
+mkdir -p /data/findora/mainnet/tendermint/
+
 
 check_env
 
