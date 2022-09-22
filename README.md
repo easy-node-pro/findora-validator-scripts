@@ -5,7 +5,9 @@ Findora Validator Script Repo!
 Firewall settings for using ufw with Findora for those of you on Contabo or other providers with software firewalls.
 
 ## node_init.sh
-Easy Node's updated node_init.sh to create a **brand new server with a brand new wallet** in 1 swoop. **Do not run this on a server with your existing files or they will be overwritten!!!**
+Easy Node's updated node_init.sh to create a **brand new server with a brand new wallet** in 1 swoop. **Do not run this on a server with your existing files or they will be overwritten!!!**  
+
+We made some modifications to add a restart on boot and to also install the current version of `fn` during the script instead of separately.  
 
 Install docker and configure your user by running following code. If you user isn't `servicefindora` update that to be your username in the following code before running it on your server:
 ```text
@@ -18,6 +20,8 @@ wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/m
 ```
 
 ## update_version
+Our version of the update_version script for mainnet. We added the option to restart on reboot.  
+
 To check for updates & restart your mainnet Findora node:
 ```text
 wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/update_version_mainnet.sh -O update_version_mainnet.sh && bash -x update_version_mainnet.sh
