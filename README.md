@@ -2,7 +2,7 @@
 Findora Validator Script Repo!
 
 ## Findora Node Scripts
-Below is our version of the installer script (node_init.sh) and the update version script (update_version_mainnet.sh). Either script can be easily modified to be run on testnet, simply update the `NAMESPACE` variable at the start of either script.  
+Below is our version of the installer script (node_init.sh) and the update version script (update_version.sh). Either script can be easily modified to be run on testnet, simply update the `NAMESPACE` variable at the start of either script.  
 
 ### node_init.sh
 Easy Node's updated node_init.sh to create a **brand new server with a brand new wallet** in 1 swoop. **Do not run this on a server with your existing files or they will be overwritten!!!**  
@@ -16,7 +16,7 @@ sudo apt update -y && sudo apt install apt-transport-https ca-certificates curl 
 
 Restart your shell session (disconnect and reconnect so your user account has docker group access), then grab the script and fire away!
 ```text
-wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/node_init_mainnet.sh -O node_init.sh && bash -x node_init.sh
+wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/node_init.sh -O node_init.sh && bash -x node_init.sh
 ```
 
 ### update_version.sh
