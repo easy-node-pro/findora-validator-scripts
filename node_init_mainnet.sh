@@ -110,6 +110,7 @@ rm -rf ${ROOT_DIR}/snapshot_data
 docker run -d \
     -v ${ROOT_DIR}/tendermint:/root/.tendermint \
     -v ${ROOT_DIR}/findorad:/tmp/findora \
+    --restart unless-stopped \
     -p 8669:8669 \
     -p 8668:8668 \
     -p 8667:8667 \
@@ -119,7 +120,6 @@ docker run -d \
     --name findorad \
     ${FINDORAD_IMG} node \
     --ledger-dir /tmp/findora \
-    --restart unless-stopped \
     --tendermint-host 0.0.0.0 \
     --tendermint-node-key-config-path="/root/.tendermint/config/priv_validator_key.json" \
     --enable-query-service \
