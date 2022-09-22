@@ -19,12 +19,12 @@ Restart your shell session (disconnect and reconnect so your user account has do
 wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/node_init_mainnet.sh -O node_init.sh && bash -x node_init.sh
 ```
 
-### update_version
+### update_version.sh
 Our version of the update_version script for mainnet. We added the option to restart on reboot.  
 
 To check for updates & restart your mainnet Findora node:
 ```text
-wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/update_version_mainnet.sh -O update_version_mainnet.sh && bash -x update_version_mainnet.sh
+wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/update_version.sh -O update_version.sh && bash -x update_version.sh
 ```
 
 ## Firewall Settings
