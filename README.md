@@ -16,3 +16,9 @@ Restart your shell session (disconnect and reconnect so your user account has do
 ```text
 wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/node_init_mainnet.sh -O node_init.sh && bash -x node_init.sh
 ```
+
+## update_version
+To check for updates & restart your mainnet Findora node:
+```text
+wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/update_version_mainnet.sh -O update_version_mainnet.sh && bash -x update_version_mainnet.sh
+```
