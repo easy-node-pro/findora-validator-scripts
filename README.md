@@ -14,7 +14,7 @@ Install docker and configure your user by running following code. If you user is
 sudo apt update -y && sudo apt install apt-transport-https ca-certificates curl software-properties-common -y && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - && sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" && sudo apt install docker-ce -y && sudo usermod -aG docker servicefindora
 ```
 
-Restart your shell session (disconnect and reconnect so your user account has docker group access), then grab the script and fire away!
+Restart your shell session (disconnect and reconnect so your user account has docker group access), then grab the mainnet script and fire away! If you want to run testnet, just update the word mainnet below to be testnet:
 ```text
 wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/node_init_mainnet.sh -O node_init.sh && bash -x node_init.sh
 ```
