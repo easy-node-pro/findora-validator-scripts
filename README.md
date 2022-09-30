@@ -24,7 +24,7 @@ Our version of the update_version script for mainnet. We added the option to res
 
 To check for updates & restart your mainnet Findora node:
 ```text
-wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/update_version.sh -O update_version.sh && bash -x update_version.sh
+wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/update_version_mainnet.sh -O update_version.sh && bash -x update_version.sh
 ```
 
 ## Firewall Settings
