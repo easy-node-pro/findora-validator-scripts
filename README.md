@@ -16,7 +16,7 @@ sudo apt update -y && sudo apt install apt-transport-https ca-certificates curl 
 
 Restart your shell session (disconnect and reconnect so your user account has docker group access), then grab the script and fire away!
 ```text
-wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/node_init.sh -O node_init.sh && bash -x node_init.sh
+wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/node_init_mainnet.sh -O node_init.sh && bash -x node_init.sh
 ```
 
 ### update_version.sh
