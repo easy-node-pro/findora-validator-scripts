@@ -43,7 +43,7 @@ FN=${ROOT_DIR}/bin/fn
 cd ~/
 sudo mkdir -p /data/findora
 sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
-mkdir -p /data/findora/mainnet/tendermint/
+mkdir -p /data/findora/${NAMESPACE}/tendermint/
 
 
 check_env
