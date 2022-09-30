@@ -128,7 +128,7 @@ docker run -d \
     --name findorad \
     ${FINDORAD_IMG} node \
     --ledger-dir /tmp/findora \
-    --checkpoint-file=/root/checkpoint.toml \
+    --checkpoint-file=${ROOT_DIR}/checkpoint.toml \
     --tendermint-host 0.0.0.0 \
     --tendermint-node-key-config-path="/root/.tendermint/config/priv_validator_key.json" \
     --enable-query-service \
