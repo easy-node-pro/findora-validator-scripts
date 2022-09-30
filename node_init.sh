@@ -17,7 +17,7 @@ check_env() {
     done
 
     if ! [ -f "$keypath" ]; then
-        echo -e "\nCreating Keypair and copying to mainnet_node.key"
+        echo -e "\nCreating Keypair and copying to ${NAMESPACE}_node.key"
         fn genkey > tmp.gen.keypair
         cp tmp.gen.keypair /data/findora/${NAMESPACE}/${NAMESPACE}_node.key
         keypath=${ROOT_DIR}/${NAMESPACE}_node.key
@@ -99,7 +99,7 @@ mkdir "${ROOT_DIR}/snapshot_data"
 tar zxvf "${ROOT_DIR}/snapshot" -C "${ROOT_DIR}/snapshot_data"
 
 mv "${ROOT_DIR}/snapshot_data/data/ledger" "${ROOT_DIR}/findorad"
-mv "${ROOT_DIR}/snapshot_data/data/tendermint/mainnet/node0/data" "${ROOT_DIR}/tendermint/data"
+mv "${ROOT_DIR}/snapshot_data/data/tendermint/${NAMESPACE}/node0/data" "${ROOT_DIR}/tendermint/data"
 
 rm -rf ${ROOT_DIR}/snapshot_data
 
