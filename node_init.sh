@@ -19,7 +19,7 @@ check_env() {
     if ! [ -f "$keypath" ]; then
         echo -e "\nCreating Keypair and copying to mainnet_node.key"
         fn genkey > tmp.gen.keypair
-        cp tmp.gen.keypair /data/findora/mainnet/mainnet_node.key
+        cp tmp.gen.keypair /data/findora/${NAMESPACE}/${NAMESPACE}_node.key
         keypath=${ROOT_DIR}/${NAMESPACE}_node.key
     fi
 }
