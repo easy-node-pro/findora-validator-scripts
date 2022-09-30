@@ -89,6 +89,7 @@ sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/
 wget -O "${ROOT_DIR}/latest" "https://${ENV}-${NAMESPACE}-us-west-2-chain-data-backup.s3.us-west-2.amazonaws.com/latest"
 CHAINDATA_URL=$(cut -d , -f 1 "${ROOT_DIR}/latest")
 echo $CHAINDATA_URL
+sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
 
 # remove old data 
 rm -rf "${ROOT_DIR}/findorad"

@@ -109,6 +109,7 @@ rm -rf ${ROOT_DIR}/snapshot_data
 ###################
 rm -rf "${ROOT_DIR}/checkpoint.toml"
 wget -O "${ROOT_DIR}/checkpoint.toml" "${CHECKPOINT_URL}"
+sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
 
 ###################
 # Run local node #
