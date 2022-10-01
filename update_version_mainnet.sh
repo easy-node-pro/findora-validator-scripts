@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -ex
+USERNAME=$USER
 ENV=prod
 NAMESPACE=mainnet
 LIVE_VERSION=$(curl -s https://${ENV}-${NAMESPACE}.${ENV}.findora.org:8668/version | awk -F\  '{print $2}')
