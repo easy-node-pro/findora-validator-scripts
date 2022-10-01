@@ -23,7 +23,7 @@ docker rm findorad || exit 1
 docker run -d \
     -v ${ROOT_DIR}/tendermint:/root/.tendermint \
     -v ${ROOT_DIR}/findorad:/tmp/findora \
-    -v ${ROOT_DIR}/checkpoint.toml:${ROOT_DIR}/checkpoint.toml \
+    -v ${ROOT_DIR}/checkpoint.toml:/root/checkpoint.toml \
     -p 8669:8669 \
     -p 8668:8668 \
     -p 8667:8667 \
