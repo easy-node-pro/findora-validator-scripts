@@ -28,8 +28,8 @@ tar zxvf "${ROOT_DIR}/snapshot" -C "${ROOT_DIR}/snapshot_data"
 
 mv "${ROOT_DIR}/snapshot_data/data/ledger" "${ROOT_DIR}/findorad"
 mv "${ROOT_DIR}/snapshot_data/data/tendermint/mainnet/node0/data" "${ROOT_DIR}/tendermint/data"
-sudo chown -R ${USER}:${USER} /data/findora/
-wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/priv_validator_state.json -O /data/findora/${NAMESPACE}/tendermint/data/priv_validator_state.json
+sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
+wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/priv_validator_state.json -O /data/findora/testnet/tendermint/data/priv_validator_state.json
 
 rm -rf ${ROOT_DIR}/snapshot_data
 
