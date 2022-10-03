@@ -46,7 +46,6 @@ sudo mkdir -p /data/findora
 sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
 mkdir -p /data/findora/${NAMESPACE}/tendermint/
 
-
 check_env
 
 if [[ "Linux" == `uname -s` ]]; then
@@ -109,6 +108,7 @@ rm -rf ${ROOT_DIR}/snapshot_data
 rm -rf "${ROOT_DIR}/checkpoint.toml"
 wget -O "${ROOT_DIR}/checkpoint.toml" "${CHECKPOINT_URL}"
 sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
+wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/priv_validator_state.json -O /data/findora/${NAMESPACE}/tendermint/data/priv_validator_state.json
 
 ###################
 # Run local node #
