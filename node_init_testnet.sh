@@ -6,8 +6,7 @@ SERV_URL=https://${ENV}-${NAMESPACE}.${ENV}.findora.org
 LIVE_VERSION=$(curl -s https://${ENV}-${NAMESPACE}.${ENV}.findora.org:8668/version | awk -F\  '{print $2}')
 FINDORAD_IMG=findoranetwork/findorad:${LIVE_VERSION}
 CHECKPOINT_URL=https://${ENV}-${NAMESPACE}-us-west-2-ec2-instance.s3.us-west-2.amazonaws.com/${NAMESPACE}/checkpoint
-
-export ROOT_DIR=/data/findora/${NAMESPACE}
+ROOT_DIR=/data/findora/${NAMESPACE}
 
 check_env() {
     for i in wget curl; do
@@ -77,7 +76,6 @@ $FN setup -O ${ROOT_DIR}/node.mnemonic || exit 1
 sudo rm -rf ${ROOT_DIR}/findorad || exit 1
 mkdir -p ${ROOT_DIR}/findorad || exit 1
 
-
 docker run --rm -v ${ROOT_DIR}/tendermint:/root/.tendermint ${FINDORAD_IMG} init --${NAMESPACE} || exit 1
 
 sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/
@@ -130,7 +128,7 @@ docker run -d \
     --name findorad \
     ${FINDORAD_IMG} node \
     --ledger-dir /tmp/findora \
-    --checkpoint-file=${ROOT_DIR}/checkpoint.toml \
+    --checkpoint-file=/root/checkpoint.toml \
     --tendermint-host 0.0.0.0 \
     --tendermint-node-key-config-path="/root/.tendermint/config/priv_validator_key.json" \
     --enable-query-service \
