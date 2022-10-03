@@ -44,7 +44,8 @@ FN=${ROOT_DIR}/bin/fn
 cd ~/
 sudo mkdir -p /data/findora
 sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
-mkdir -p /data/findora/${NAMESPACE}/tendermint/
+mkdir -p /data/findora/${NAMESPACE}/tendermint/data
+mkdir -p /data/findora/${NAMESPACE}/tendermint/config
 
 check_env
 
@@ -77,7 +78,7 @@ mkdir -p ${ROOT_DIR}/findorad || exit 1
 
 docker run --rm -v ${ROOT_DIR}/tendermint:/root/.tendermint ${FINDORAD_IMG} init --${NAMESPACE} || exit 1
 
-sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/
+sudo chown -R ${USERNAME}:${USERNAME} /data/findora/${NAMESPACE}/
 
 ###################
 # get snapshot    #
@@ -107,7 +108,7 @@ rm -rf ${ROOT_DIR}/snapshot_data
 ###################
 rm -rf "${ROOT_DIR}/checkpoint.toml"
 wget -O "${ROOT_DIR}/checkpoint.toml" "${CHECKPOINT_URL}"
-sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
+sudo chown -R ${USERNAME}:${USERNAME} /data/findora/${NAMESPACE}/
 wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/priv_validator_state.json -O /data/findora/${NAMESPACE}/tendermint/data/priv_validator_state.json
 
 ###################
