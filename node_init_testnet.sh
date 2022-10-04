@@ -78,7 +78,7 @@ mkdir -p ${ROOT_DIR}/findorad || exit 1
 
 docker run --rm -v ${ROOT_DIR}/tendermint:/root/.tendermint ${FINDORAD_IMG} init --${NAMESPACE} || exit 1
 
-sudo chown -R ${USERNAME}:${USERNAME} /data/findora/${NAMESPACE}/
+sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/tendermint/
 
 ###################
 # get snapshot    #
@@ -97,11 +97,12 @@ rm -rf "${ROOT_DIR}/tendermint/config/addrbook.json"
 wget -O "${ROOT_DIR}/snapshot" "${CHAINDATA_URL}" 
 mkdir "${ROOT_DIR}/snapshot_data"
 tar zxvf "${ROOT_DIR}/snapshot" -C "${ROOT_DIR}/snapshot_data"
-
-mv "${ROOT_DIR}/snapshot_data/data/ledger" "${ROOT_DIR}/findorad"
-mv "${ROOT_DIR}/snapshot_data/data/tendermint/${NAMESPACE}/node0/data" "${ROOT_DIR}/tendermint/data"
 sudo chown -R ${USERNAME}:${USERNAME} /data/findora/${NAMESPACE}/tendermint/data
+sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/snapshot_data/
 cp /tmp/priv_validator_state.json /data/findora/${NAMESPACE}/tendermint/data/priv_validator_state.json
+mv "${ROOT_DIR}/snapshot_data/data/ledger" "${ROOT_DIR}/findorad"
+mv "${ROOT_DIR}/snapshot_data/data/tendermint/mainnet/node0/data" "${ROOT_DIR}/tendermint/data"
+
 rm -rf ${ROOT_DIR}/snapshot_data
 
 ###################
@@ -109,7 +110,6 @@ rm -rf ${ROOT_DIR}/snapshot_data
 ###################
 rm -rf "${ROOT_DIR}/checkpoint.toml"
 wget -O "${ROOT_DIR}/checkpoint.toml" "${CHECKPOINT_URL}"
-sudo chown -R ${USERNAME}:${USERNAME} /data/findora/${NAMESPACE}/
 
 ###################
 # Run local node #
