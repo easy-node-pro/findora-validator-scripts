@@ -100,7 +100,7 @@ tar zxvf "${ROOT_DIR}/snapshot" -C "${ROOT_DIR}/snapshot_data"
 
 mv "${ROOT_DIR}/snapshot_data/data/ledger" "${ROOT_DIR}/findorad"
 mv "${ROOT_DIR}/snapshot_data/data/tendermint/${NAMESPACE}/node0/data" "${ROOT_DIR}/tendermint/data"
-
+sudo chown -R ${USERNAME}:${USERNAME} /data/findora/${NAMESPACE}/
 rm -rf ${ROOT_DIR}/snapshot_data
 
 ###################
@@ -109,7 +109,8 @@ rm -rf ${ROOT_DIR}/snapshot_data
 rm -rf "${ROOT_DIR}/checkpoint.toml"
 wget -O "${ROOT_DIR}/checkpoint.toml" "${CHECKPOINT_URL}"
 sudo chown -R ${USERNAME}:${USERNAME} /data/findora/${NAMESPACE}/
-wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/priv_validator_state.json -O /data/findora/${NAMESPACE}/tendermint/data/priv_validator_state.json
+wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/priv_validator_state.json -O /tmp/priv_validator_state.json 
+cp /tmp/priv_validator_state.json /data/findora/${NAMESPACE}/tendermint/data/priv_validator_state.json
 
 ###################
 # Run local node #
@@ -129,7 +130,7 @@ docker run -d \
     --name findorad \
     ${FINDORAD_IMG} node \
     --ledger-dir /tmp/findora \
-    --checkpoint-file=/root/checkpoint.toml \
+    --checkpoint-file=${ROOT_DIR}/checkpoint.toml \
     --tendermint-host 0.0.0.0 \
     --tendermint-node-key-config-path="/root/.tendermint/config/priv_validator_key.json" \
     --enable-query-service \
