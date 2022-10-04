@@ -41,7 +41,6 @@ export ROOT_DIR=/data/findora/${NAMESPACE}
 wget https://wiki.findora.org/bin/linux/fn && chmod +x fn && sudo mv fn /usr/local/bin/
 FN=${ROOT_DIR}/bin/fn
 cd ~/
-wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/priv_validator_state.json -O /tmp/priv_validator_state.json
 sudo mkdir -p /data/findora
 sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
 mkdir -p /data/findora/${NAMESPACE}/tendermint/data
@@ -99,7 +98,6 @@ mkdir "${ROOT_DIR}/snapshot_data"
 tar zxvf "${ROOT_DIR}/snapshot" -C "${ROOT_DIR}/snapshot_data"
 sudo chown -R ${USERNAME}:${USERNAME} /data/findora/${NAMESPACE}/tendermint/data
 sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/snapshot_data/
-cp /tmp/priv_validator_state.json /data/findora/${NAMESPACE}/tendermint/data/priv_validator_state.json
 mv "${ROOT_DIR}/snapshot_data/data/ledger" "${ROOT_DIR}/findorad"
 mv "${ROOT_DIR}/snapshot_data/data/tendermint/mainnet/node0/data" "${ROOT_DIR}/tendermint/data"
 
