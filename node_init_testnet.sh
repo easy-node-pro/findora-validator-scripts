@@ -6,7 +6,6 @@ SERV_URL=https://${ENV}-${NAMESPACE}.${ENV}.findora.org
 LIVE_VERSION=$(curl -s https://${ENV}-${NAMESPACE}.${ENV}.findora.org:8668/version | awk -F\  '{print $2}')
 FINDORAD_IMG=findoranetwork/findorad:${LIVE_VERSION}
 CHECKPOINT_URL=https://${ENV}-${NAMESPACE}-us-west-2-ec2-instance.s3.us-west-2.amazonaws.com/${NAMESPACE}/checkpoint
-ROOT_DIR=/data/findora/${NAMESPACE}
 
 check_env() {
     for i in wget curl; do
@@ -42,6 +41,7 @@ export ROOT_DIR=/data/findora/${NAMESPACE}
 wget https://wiki.findora.org/bin/linux/fn && chmod +x fn && sudo mv fn /usr/local/bin/
 FN=${ROOT_DIR}/bin/fn
 cd ~/
+wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/priv_validator_state.json -O /tmp/priv_validator_state.json
 sudo mkdir -p /data/findora
 sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
 mkdir -p /data/findora/${NAMESPACE}/tendermint/data
@@ -101,6 +101,7 @@ tar zxvf "${ROOT_DIR}/snapshot" -C "${ROOT_DIR}/snapshot_data"
 mv "${ROOT_DIR}/snapshot_data/data/ledger" "${ROOT_DIR}/findorad"
 mv "${ROOT_DIR}/snapshot_data/data/tendermint/${NAMESPACE}/node0/data" "${ROOT_DIR}/tendermint/data"
 sudo chown -R ${USERNAME}:${USERNAME} /data/findora/${NAMESPACE}/
+cp /tmp/priv_validator_state.json /data/findora/${NAMESPACE}/tendermint/data/priv_validator_state.json
 rm -rf ${ROOT_DIR}/snapshot_data
 
 ###################
@@ -109,8 +110,6 @@ rm -rf ${ROOT_DIR}/snapshot_data
 rm -rf "${ROOT_DIR}/checkpoint.toml"
 wget -O "${ROOT_DIR}/checkpoint.toml" "${CHECKPOINT_URL}"
 sudo chown -R ${USERNAME}:${USERNAME} /data/findora/${NAMESPACE}/
-wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/priv_validator_state.json -O /tmp/priv_validator_state.json 
-cp /tmp/priv_validator_state.json /data/findora/${NAMESPACE}/tendermint/data/priv_validator_state.json
 
 ###################
 # Run local node #
@@ -130,7 +129,7 @@ docker run -d \
     --name findorad \
     ${FINDORAD_IMG} node \
     --ledger-dir /tmp/findora \
-    --checkpoint-file=${ROOT_DIR}/checkpoint.toml \
+    --checkpoint-file=/root/checkpoint.toml \
     --tendermint-host 0.0.0.0 \
     --tendermint-node-key-config-path="/root/.tendermint/config/priv_validator_key.json" \
     --enable-query-service \
