@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -ex
-USERNAME=$USER
+
 ENV=prod
 NAMESPACE=mainnet
 LIVE_VERSION=$(curl -s https://${ENV}-${NAMESPACE}.${ENV}.findora.org:8668/version | awk -F\  '{print $2}')
@@ -19,17 +19,16 @@ rm -rf "${ROOT_DIR}/tendermint/config/addrbook.json"
 docker run -d \
     -v ${ROOT_DIR}/tendermint:/root/.tendermint \
     -v ${ROOT_DIR}/findorad:/tmp/findora \
-    -v ${ROOT_DIR}/checkpoint.toml:/root/checkpoint.toml \
+    --restart unless-stopped \
     -p 8669:8669 \
     -p 8668:8668 \
     -p 8667:8667 \
     -p 8545:8545 \
     -p 26657:26657 \
-    -e EVM_CHAIN_ID=2153 \
+    -e EVM_CHAIN_ID=2152 \
     --name findorad \
     ${FINDORAD_IMG} node \
     --ledger-dir /tmp/findora \
-    --checkpoint-file=${ROOT_DIR}/checkpoint.toml \
     --tendermint-host 0.0.0.0 \
     --tendermint-node-key-config-path="/root/.tendermint/config/priv_validator_key.json" \
     --enable-query-service \
