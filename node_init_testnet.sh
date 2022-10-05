@@ -6,6 +6,9 @@ SERV_URL=https://${ENV}-${NAMESPACE}.${ENV}.findora.org
 LIVE_VERSION=$(curl -s https://${ENV}-${NAMESPACE}.${ENV}.findora.org:8668/version | awk -F\  '{print $2}')
 FINDORAD_IMG=findoranetwork/findorad:${LIVE_VERSION}
 CHECKPOINT_URL=https://${ENV}-${NAMESPACE}-us-west-2-ec2-instance.s3.us-west-2.amazonaws.com/${NAMESPACE}/checkpoint
+export ROOT_DIR=/data/findora/${NAMESPACE}
+keypath=${ROOT_DIR}/${NAMESPACE}_node.key
+FN=${ROOT_DIR}/bin/fn
 
 check_env() {
     for i in wget curl; do
@@ -17,10 +20,9 @@ check_env() {
     done
 
     if ! [ -f "$keypath" ]; then
-        echo -e "\nCreating Keypair and copying to ${NAMESPACE}_node.key"
+        echo -e "No tmp.gen.keypair file detected, generating file and creating to ${NAMESPACE}_node.key"
         fn genkey > tmp.gen.keypair
         cp tmp.gen.keypair /data/findora/${NAMESPACE}/${NAMESPACE}_node.key
-        keypath=${ROOT_DIR}/${NAMESPACE}_node.key
     fi
 }
 
@@ -37,15 +39,24 @@ set_binaries() {
     chmod -R +x ${new_path} || exit 1
 }
 
-export ROOT_DIR=/data/findora/${NAMESPACE}
-wget https://wiki.findora.org/bin/linux/fn && chmod +x fn && sudo mv fn /usr/local/bin/
-FN=${ROOT_DIR}/bin/fn
-cd ~/
+##################
+# Install fn App #
+##################
+wget https://wiki.findora.org/bin/linux/fn
+chmod +x fn
+sudo mv fn /usr/local/bin/
+
+######################################
+# Make Directories & Set Permissions #
+######################################
 sudo mkdir -p /data/findora
 sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
 mkdir -p /data/findora/${NAMESPACE}/tendermint/data
 mkdir -p /data/findora/${NAMESPACE}/tendermint/config
 
+############################
+# Check for existing files #
+############################
 check_env
 
 if [[ "Linux" == `uname -s` ]]; then
@@ -75,8 +86,10 @@ $FN setup -O ${ROOT_DIR}/node.mnemonic || exit 1
 sudo rm -rf ${ROOT_DIR}/findorad || exit 1
 mkdir -p ${ROOT_DIR}/findorad || exit 1
 
+# tendermint config
 docker run --rm -v ${ROOT_DIR}/tendermint:/root/.tendermint ${FINDORAD_IMG} init --${NAMESPACE} || exit 1
 
+# reset permissions again
 sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/tendermint/
 
 ###################
@@ -135,6 +148,9 @@ docker run -d \
 
 sleep 10
 
+#############################
+# Post Install Stats Report #
+#############################
 curl 'http://localhost:26657/status'; echo
 curl 'http://localhost:8669/version'; echo
 curl 'http://localhost:8668/version'; echo
