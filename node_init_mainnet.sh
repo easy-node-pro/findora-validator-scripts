@@ -5,8 +5,9 @@ NAMESPACE=mainnet
 SERV_URL=https://${ENV}-${NAMESPACE}.${ENV}.findora.org
 LIVE_VERSION=$(curl -s https://${ENV}-${NAMESPACE}.${ENV}.findora.org:8668/version | awk -F\  '{print $2}')
 FINDORAD_IMG=findoranetwork/findorad:${LIVE_VERSION}
-
 export ROOT_DIR=/data/findora/${NAMESPACE}
+keypath=${ROOT_DIR}/${NAMESPACE}_node.key
+FN=${ROOT_DIR}/bin/fn
 
 check_env() {
     for i in wget curl; do
@@ -18,10 +19,9 @@ check_env() {
     done
 
     if ! [ -f "$keypath" ]; then
-        echo -e "\nCreating Keypair and copying to ${NAMESPACE}_node.key"
+        echo -e "No tmp.gen.keypair file detected, generating file and creating to ${NAMESPACE}_node.key"
         fn genkey > tmp.gen.keypair
         cp tmp.gen.keypair /data/findora/${NAMESPACE}/${NAMESPACE}_node.key
-        keypath=${ROOT_DIR}/${NAMESPACE}_node.key
     fi
 }
 
@@ -38,15 +38,24 @@ set_binaries() {
     chmod -R +x ${new_path} || exit 1
 }
 
+##################
+# Install fn App #
+##################
 export ROOT_DIR=/data/findora/${NAMESPACE}
-wget https://wiki.findora.org/bin/linux/fn && chmod +x fn && sudo mv fn /usr/local/bin/
-FN=${ROOT_DIR}/bin/fn
-cd ~/
+wget https://wiki.findora.org/bin/linux/fn
+chmod +x fn
+sudo mv fn /usr/local/bin/
+
+######################################
+# Make Directories & Set Permissions #
+######################################
 sudo mkdir -p /data/findora
 sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
 mkdir -p /data/findora/${NAMESPACE}/tendermint/
 
-
+############################
+# Check for existing files #
+############################
 check_env
 
 if [[ "Linux" == `uname -s` ]]; then
@@ -101,7 +110,7 @@ mkdir "${ROOT_DIR}/snapshot_data"
 tar zxvf "${ROOT_DIR}/snapshot" -C "${ROOT_DIR}/snapshot_data"
 
 mv "${ROOT_DIR}/snapshot_data/data/ledger" "${ROOT_DIR}/findorad"
-mv "${ROOT_DIR}/snapshot_data/data/tendermint/${NAMESPACE}/node0/data" "${ROOT_DIR}/tendermint/data"
+mv "${ROOT_DIR}/snapshot_data/data/tendermint/mainnet/node0/data" "${ROOT_DIR}/tendermint/data"
 
 rm -rf ${ROOT_DIR}/snapshot_data
 
@@ -128,6 +137,9 @@ docker run -d \
 
 sleep 10
 
+#############################
+# Post Install Stats Report #
+#############################
 curl 'http://localhost:26657/status'; echo
 curl 'http://localhost:8669/version'; echo
 curl 'http://localhost:8668/version'; echo
