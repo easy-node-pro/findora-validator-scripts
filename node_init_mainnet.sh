@@ -69,9 +69,9 @@ else
     exit 1
 fi
 
-######################
+#####################
 # Config local node #
-######################
+#####################
 node_mnemonic=$(cat ${keypath} | grep 'Mnemonic' | sed 's/^.*Mnemonic:[^ ]* //')
 xfr_pubkey="$(cat ${keypath} | grep 'pub_key' | sed 's/[",]//g' | sed 's/ *pub_key: *//')"
 
