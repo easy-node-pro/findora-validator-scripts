@@ -22,7 +22,6 @@ check_env() {
     if ! [ -f "$keypath" ]; then
         echo -e "No tmp.gen.keypair file detected, generating file and creating to ${NAMESPACE}_node.key"
         fn genkey > tmp.gen.keypair
-        cp tmp.gen.keypair /data/findora/${NAMESPACE}/${NAMESPACE}_node.key
     fi
 }
 
@@ -58,6 +57,8 @@ mkdir -p /data/findora/${NAMESPACE}/tendermint/config
 # Check for existing files #
 ############################
 check_env
+
+cp tmp.gen.keypair /data/findora/${NAMESPACE}/${NAMESPACE}_node.key
 
 if [[ "Linux" == `uname -s` ]]; then
     set_binaries linux
