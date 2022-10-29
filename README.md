@@ -4,8 +4,8 @@ Findora Validator Script Repo!
 ## Findora Node Scripts
 Below is our version of the installer script (node_init.sh) and the update version script (update_version.sh). Either script can be easily modified to be run on testnet, simply update the `NAMESPACE` variable at the start of either script.  
 
-### node_init.sh
-Easy Node's updated node_init.sh to create a **brand new server with a brand new wallet** in 1 swoop. We've updated the official script to run a bit smoother.
+### easy_install.sh
+Easy Node's updated easy_install.sh to create a **brand new server with a brand new wallet** in 1 swoop. We've updated the official script to run a bit smoother.
 
 Here's the modifications we've made to the script:
 - Detect username who launched script for use in permissions later
