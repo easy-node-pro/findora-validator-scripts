@@ -2,10 +2,10 @@
 Findora Validator Script Repo!
 
 ## Findora Node Scripts
-Below is our version of the installer script (node_init.sh) and the update version script (update_version.sh). Either script can be easily modified to be run on testnet, simply update the `NAMESPACE` variable at the start of either script.  
+Below are our versions of the installer script (node_init.sh) and the update version script (update_version.sh). Either script can be easily modified to be run on testnet, simply update the `NAMESPACE` variable at the start of either script.  
 
-### easy_install.sh
-Easy Node's updated easy_install.sh to create a **brand new server with a brand new wallet** in 1 swoop. We've updated the official script to run a bit smoother.
+### Findora Installer - easy_install.sh
+Easy Node's updated easy_install.sh to create a **brand new server with a brand new wallet** in 1 command. **This script should only be run on a brand new server/image.**
 
 Here's the modifications we've made to the script:
 - Detect username who launched script for use in permissions later
@@ -24,7 +24,7 @@ sudo apt update -y && sudo apt install apt-transport-https ca-certificates curl 
 #### Run installer
 Once you're in the docker group, have sudo access and you've reconnected you are ready to run the installer. If you want to run testnet, just update the word `mainnet` in the code below to be `testnet` instead:
 ```text
-wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/node_init_mainnet.sh -O node_init.sh && bash -x node_init.sh
+wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/easy_install_mainnet.sh -O easy_install.sh && bash -x easy_install.sh
 ```
 
 ### update_version.sh
