@@ -39,4 +39,4 @@ wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/m
 Below are our configurations for different software firewalls.  
 
 ### [ufw.md](/ufw.md)
-Firewall settings for using ufw with Findora for those of you on Contabo or other providers with software firewalls.
+Firewall settings for using ufw with Findora for those of you on Contabo or other providers with software firewalls. Same ports should be opened on any provider with a web firewall (Hetzner, Contabo, Digital Ocean, AWS, GCP, Azure, etc...)
