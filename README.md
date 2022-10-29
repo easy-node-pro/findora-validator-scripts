@@ -38,5 +38,5 @@ wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/m
 ## Firewall Settings
 Below are our configurations for different software firewalls.  
 
-### ufw.sh
+### [ufw.sh](/ufw.sh)
 Firewall settings for using ufw with Findora for those of you on Contabo or other providers with software firewalls.

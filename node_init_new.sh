@@ -1,13 +1,10 @@
 #!/usr/bin/env bash
-USERNAME=$USER
 ENV=prod
 NAMESPACE=mainnet
 SERV_URL=https://${ENV}-${NAMESPACE}.${ENV}.findora.org
 LIVE_VERSION=$(curl -s https://${ENV}-${NAMESPACE}.${ENV}.findora.org:8668/version | awk -F\  '{print $2}')
 FINDORAD_IMG=findoranetwork/findorad:${LIVE_VERSION}
-export ROOT_DIR=/data/findora/${NAMESPACE}
-keypath=${ROOT_DIR}/${NAMESPACE}_node.key
-FN=${ROOT_DIR}/bin/fn
+
 
 check_env() {
     for i in wget curl; do
@@ -19,8 +16,8 @@ check_env() {
     done
 
     if ! [ -f "$keypath" ]; then
-        echo -e "No tmp.gen.keypair file detected, generating file and creating to ${NAMESPACE}_node.key"
-        fn genkey > tmp.gen.keypair
+        echo "The key file doesnot exist: $keypath"
+        exit 1
     fi
 }
 
@@ -37,27 +34,12 @@ set_binaries() {
     chmod -R +x ${new_path} || exit 1
 }
 
-##################
-# Install fn App #
-##################
-export ROOT_DIR=/data/findora/${NAMESPACE}
-wget https://github.com/FindoraNetwork/findora-wiki-docs/raw/main/.gitbook/assets/fn
-chmod +x fn
-sudo mv fn /usr/local/bin/
-
-######################################
-# Make Directories & Set Permissions #
-######################################
 sudo mkdir -p /data/findora
-sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
-mkdir -p /data/findora/${NAMESPACE}/tendermint/
+export ROOT_DIR=/data/findora/${NAMESPACE}
+keypath=${ROOT_DIR}/${NAMESPACE}_node.key
+FN=${ROOT_DIR}/bin/fn
 
-############################
-# Check for existing files #
-############################
 check_env
-
-cp tmp.gen.keypair /data/findora/${NAMESPACE}/${NAMESPACE}_node.key
 
 if [[ "Linux" == `uname -s` ]]; then
     set_binaries linux
@@ -70,9 +52,10 @@ else
     exit 1
 fi
 
-#####################
+######################
 # Config local node #
-#####################
+######################
+
 node_mnemonic=$(cat ${keypath} | grep 'Mnemonic' | sed 's/^.*Mnemonic:[^ ]* //')
 xfr_pubkey="$(cat ${keypath} | grep 'pub_key' | sed 's/[",]//g' | sed 's/ *pub_key: *//')"
 
@@ -89,7 +72,7 @@ mkdir -p ${ROOT_DIR}/findorad || exit 1
 
 docker run --rm -v ${ROOT_DIR}/tendermint:/root/.tendermint ${FINDORAD_IMG} init --${NAMESPACE} || exit 1
 
-sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/
+sudo chown -R `id -u`:`id -g` ${ROOT_DIR}/tendermint/
 
 ###################
 # get snapshot    #
@@ -99,8 +82,6 @@ sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/
 wget -O "${ROOT_DIR}/latest" "https://${ENV}-${NAMESPACE}-us-west-2-chain-data-backup.s3.us-west-2.amazonaws.com/latest"
 CHAINDATA_URL=$(cut -d , -f 1 "${ROOT_DIR}/latest")
 echo $CHAINDATA_URL
-
-sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
 
 # remove old data 
 rm -rf "${ROOT_DIR}/findorad"
@@ -117,9 +98,12 @@ mv "${ROOT_DIR}/snapshot_data/data/tendermint/mainnet/node0/data" "${ROOT_DIR}/t
 rm -rf ${ROOT_DIR}/snapshot_data
 
 
-#####################
-# Create local node #
-#####################
+###################
+# Run local node #
+###################
+docker stop findorad 
+docker rm findorad || exit 1
+rm -rf "${ROOT_DIR}/tendermint/config/addrbook.json"
 docker run -d \
     -v ${ROOT_DIR}/tendermint:/root/.tendermint \
     -v ${ROOT_DIR}/findorad:/tmp/findora \
@@ -139,9 +123,6 @@ docker run -d \
 
 sleep 10
 
-#############################
-# Post Install Stats Report #
-#############################
 curl 'http://localhost:26657/status'; echo
 curl 'http://localhost:8669/version'; echo
 curl 'http://localhost:8668/version'; echo
