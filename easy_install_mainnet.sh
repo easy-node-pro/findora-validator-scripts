@@ -89,7 +89,8 @@ mkdir -p ${ROOT_DIR}/findorad || exit 1
 
 docker run --rm -v ${ROOT_DIR}/tendermint:/root/.tendermint ${FINDORAD_IMG} init --${NAMESPACE} || exit 1
 
-sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/
+# reset permissions on tendermint folder after init
+sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/tendermint
 
 ###################
 # get snapshot    #
@@ -100,7 +101,8 @@ wget -O "${ROOT_DIR}/latest" "https://${ENV}-${NAMESPACE}-us-west-2-chain-data-b
 CHAINDATA_URL=$(cut -d , -f 1 "${ROOT_DIR}/latest")
 echo $CHAINDATA_URL
 
-sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
+# reset permissions on all files before startup
+sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}
 
 # remove old data 
 rm -rf "${ROOT_DIR}/findorad"

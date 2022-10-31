@@ -8,6 +8,8 @@ CHECKPOINT_URL=https://${ENV}-${NAMESPACE}-us-west-2-ec2-instance.s3.us-west-2.a
 
 export ROOT_DIR=/data/findora/${NAMESPACE}
 
+sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}
+
 rm -rf "${ROOT_DIR}/tendermint/config/addrbook.json"
 ###################
 # Get checkpoint  #

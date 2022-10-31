@@ -90,7 +90,7 @@ mkdir -p ${ROOT_DIR}/findorad || exit 1
 # tendermint config
 docker run --rm -v ${ROOT_DIR}/tendermint:/root/.tendermint ${FINDORAD_IMG} init --${NAMESPACE} || exit 1
 
-# reset permissions again
+# reset permissions on tendermint
 sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/tendermint/
 
 ###################
@@ -101,6 +101,9 @@ sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/tendermint/
 wget -O "${ROOT_DIR}/latest" "https://${ENV}-${NAMESPACE}-us-west-2-chain-data-backup.s3.us-west-2.amazonaws.com/latest"
 CHAINDATA_URL=$(cut -d , -f 1 "${ROOT_DIR}/latest")
 echo $CHAINDATA_URL
+
+# reset permissions on all files before startup
+sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}
 
 # remove old data 
 rm -rf "${ROOT_DIR}/findorad"
