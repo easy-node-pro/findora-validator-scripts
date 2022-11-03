@@ -57,3 +57,12 @@ docker run -d \
     --tendermint-node-key-config-path="/root/.tendermint/config/priv_validator_key.json" \
     --enable-query-service \
     --enable-eth-api-service
+
+sleep 20
+
+curl 'http://localhost:26657/status'; echo
+curl 'http://localhost:8669/version'; echo
+curl 'http://localhost:8668/version'; echo
+curl 'http://localhost:8667/version'; echo
+
+echo "Local node data wipde, reloaded, container updated and restarted."

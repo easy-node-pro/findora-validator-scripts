@@ -41,11 +41,11 @@ docker run -d \
     --enable-query-service \
     --enable-eth-api-service
 
-sleep 10
+sleep 20
 
 curl 'http://localhost:26657/status'; echo
 curl 'http://localhost:8669/version'; echo
 curl 'http://localhost:8668/version'; echo
 curl 'http://localhost:8667/version'; echo
 
-echo "Local node initialized, please stake your FRA tokens after syncing is completed."
+echo "Local node updated and restarted."

@@ -8,6 +8,8 @@ FINDORAD_IMG=findoranetwork/findorad:${LIVE_VERSION}
 
 export ROOT_DIR=/data/findora/${NAMESPACE}
 
+sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}
+
 # remove the exist addrbook file
 rm -rf "${ROOT_DIR}/tendermint/config/addrbook.json"
 ###################
@@ -33,11 +35,11 @@ docker run -d \
     --enable-query-service \
     --enable-eth-api-service
 
-sleep 10
+sleep 20
 
 curl 'http://localhost:26657/status'; echo
 curl 'http://localhost:8669/version'; echo
 curl 'http://localhost:8668/version'; echo
 curl 'http://localhost:8667/version'; echo
 
-echo "Local node initialized, please stake your FRA tokens after syncing is completed."
+echo "Local node updated and restarted."
