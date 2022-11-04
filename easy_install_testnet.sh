@@ -150,7 +150,7 @@ docker run -d \
     --enable-query-service \
     --enable-eth-api-service
 
-sleep 15
+sleep 30
 
 #############################
 # Post Install Stats Report #

@@ -35,7 +35,7 @@ docker run -d \
     --enable-query-service \
     --enable-eth-api-service
 
-sleep 25
+sleep 30
 
 curl 'http://localhost:26657/status'; echo
 curl 'http://localhost:8669/version'; echo
