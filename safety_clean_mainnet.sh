@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+USERNAME=$USER
 ENV=prod
 NAMESPACE=mainnet
 SERV_URL=https://${ENV}-${NAMESPACE}.${ENV}.findora.org
@@ -6,6 +7,8 @@ LIVE_VERSION=$(curl -s https://${ENV}-${NAMESPACE}.${ENV}.findora.org:8668/versi
 FINDORAD_IMG=findoranetwork/findorad:${LIVE_VERSION}
 
 export ROOT_DIR=/data/findora/${NAMESPACE}
+
+sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}
 
 ###################
 # Stop local node #
