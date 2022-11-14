@@ -5,19 +5,24 @@ ENV=prod
 NAMESPACE=mainnet
 LIVE_VERSION=$(curl -s https://${ENV}-${NAMESPACE}.${ENV}.findora.org:8668/version | awk -F\  '{print $2}')
 FINDORAD_IMG=findoranetwork/findorad:${LIVE_VERSION}
+container_name=findorad
 
 export ROOT_DIR=/data/findora/${NAMESPACE}
 
 sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}
 
-# remove the exist addrbook file
-rm -rf "${ROOT_DIR}/tendermint/config/addrbook.json"
 ###################
 # Run local node #
 ###################
-docker stop findorad || exit 1
-docker rm findorad || exit 1
-rm -rf "${ROOT_DIR}/tendermint/config/addrbook.json"
+if sudo docker ps -a --format '{{.Names}}' | grep -Eq "^${container_name}\$"; then
+  echo -e "Findorad Container found, stopping container to restart."
+  docker stop findorad
+  docker rm findorad 
+  rm -rf /data/findora/mainnet/tendermint/config/addrbook.json
+else
+  echo 'Findorad container stopped or does not exist, continuing.'
+fi
+
 docker run -d \
     -v ${ROOT_DIR}/tendermint:/root/.tendermint \
     -v ${ROOT_DIR}/findorad:/tmp/findora \
