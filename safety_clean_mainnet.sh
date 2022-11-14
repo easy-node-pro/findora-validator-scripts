@@ -7,9 +7,17 @@ FINDORAD_IMG=findoranetwork/findorad:${LIVE_VERSION}
 
 export ROOT_DIR=/data/findora/${NAMESPACE}
 
-docker stop findorad || exit 1
-docker rm findorad || exit 1
-rm -rf "${ROOT_DIR}/tendermint/config/addrbook.json"
+###################
+# Stop local node #
+###################
+if sudo docker ps -a --format '{{.Names}}' | grep -Eq "^${container_name}\$"; then
+  echo -e "Findorad Container found, stopping container to restart."
+  docker stop findorad
+  docker rm findorad 
+  rm -rf /data/findora/mainnet/tendermint/config/addrbook.json
+else
+  echo 'Findorad container stopped or does not exist, continuing.'
+fi
 
 ###################
 # get snapshot    #

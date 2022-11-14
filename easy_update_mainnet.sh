@@ -12,7 +12,7 @@ export ROOT_DIR=/data/findora/${NAMESPACE}
 sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}
 
 ###################
-# Run local node #
+# Stop local node #
 ###################
 if sudo docker ps -a --format '{{.Names}}' | grep -Eq "^${container_name}\$"; then
   echo -e "Findorad Container found, stopping container to restart."
@@ -23,6 +23,9 @@ else
   echo 'Findorad container stopped or does not exist, continuing.'
 fi
 
+###################
+# Run local node #
+###################
 docker run -d \
     -v ${ROOT_DIR}/tendermint:/root/.tendermint \
     -v ${ROOT_DIR}/findorad:/tmp/findora \
