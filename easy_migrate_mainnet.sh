@@ -9,6 +9,7 @@ export ROOT_DIR=/data/findora/${NAMESPACE}
 keypath=${ROOT_DIR}/${NAMESPACE}_node.key
 migratepath=/home/${USERNAME}/migrate
 FN=${ROOT_DIR}/bin/fn
+container_name=findorad
 
 check_env() {
     for i in wget curl; do
@@ -28,14 +29,18 @@ check_env() {
     if ! [ -f "$migratepath/tmp.gen.keypair"]; then
         cp ${migratepath}/tmp.gen.keypair ${ROOT_DIR}/${NAMESPACE}_node.key
     else
-        echo -e "tmp.gen.keypair file not found at ~/migrate/tmp.gen.keypair - Add this file to ~/migrate to continue"
+        echo -e "tmp.gen.keypair file not found at ~/migrate/tmp.gen.keypair - Add this file to ~/migrate to continue."
         exit 1
     fi
 
-    if ! [ -f "$migratepath/priv_validator_key.json"]; then
+    if ! [ -f "$migratepath/config"]; then
+        echo -e "~/migrate/config found, copying."
+        cp ${migratepath}/config/* ${ROOT_DIR}/tendermint/config/
+    elif ! ["$migratepath/priv_validator_key.json"]; then
+        echo -e "~/migrate/priv_validator_key.json found, copying."
         cp ${migratepath}/priv_validator_key.json ${ROOT_DIR}/tendermint/config/priv_validator_key.json
     else
-        echo -e "priv_validator_key.json file not found at ~/migrate/priv_validator_key.json - Add this file to ~/migrate to continue"
+        echo -e "No config folder or priv_validator_key.json file found in ~/migrate. Please add these files to continue."
         exit 1
     fi
 
@@ -61,11 +66,9 @@ set_binaries() {
     chmod -R +x ${new_path} || exit 1
 }
 
-############################
-# Check for existing files #
-############################
-check_env
-
+######################################
+# Check for existing files/container #
+######################################
 if [[ "Linux" == `uname -s` ]]; then
     set_binaries linux
 # elif [[ "FreeBSD" == `uname -s` ]]; then
@@ -77,9 +80,20 @@ else
     exit 1
 fi
 
-#####################
-# Config local node #
-#####################
+if sudo docker ps -a --format '{{.Names}}' | grep -Eq "^${container_name}\$"; then
+  echo -e "Findorad Container found, stopping container."
+  docker stop findorad
+  docker rm findorad 
+  rm -rf /data/findora/mainnet/tendermint/config/addrbook.json
+else
+  echo 'Findorad container stopped or does not exist, continuing.'
+fi
+
+check_env
+
+###########################
+# Re-configure local node #
+###########################
 $FN setup -S ${SERV_URL} || exit 1
 $FN setup -K ${ROOT_DIR}/tendermint/config/priv_validator_key.json || exit 1
 $FN setup -O ${ROOT_DIR}/node.mnemonic || exit 1
