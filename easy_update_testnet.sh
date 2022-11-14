@@ -19,7 +19,7 @@ wget -O "${ROOT_DIR}/checkpoint.toml" "${CHECKPOINT_URL}"
 ###################
 # Stop local node #
 ###################
-if sudo docker ps -a --format '{{.Names}}' | grep -Eq "^${container_name}\$"; then
+if docker ps -a --format '{{.Names}}' | grep -Eq "^${container_name}\$"; then
   echo -e "Findorad Container found, stopping container to restart."
   docker stop findorad
   docker rm findorad 
