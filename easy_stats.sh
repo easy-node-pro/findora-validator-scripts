@@ -6,4 +6,4 @@ curl 'http://localhost:8669/version'; echo
 curl 'http://localhost:8668/version'; echo
 curl 'http://localhost:8667/version'; echo
 
-echo "Local node updated and restarted."
+echo "Stats provided by EasyNode.PRO."
