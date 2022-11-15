@@ -21,19 +21,34 @@ Install docker and configure your user by running following code. If you user is
 sudo apt update -y && sudo apt install apt-transport-https ca-certificates curl software-properties-common -y && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - && sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" && sudo apt install docker-ce -y && sudo usermod -aG docker servicefindora && exit
 ```
 
-#### Run installer
+#### Run our installer
 Once you're in the docker group, have sudo access and you've reconnected you are ready to run the installer. If you want to run testnet, just update the word `mainnet` in the code below to be `testnet` instead:
 ```text
 wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/easy_install_mainnet.sh -O easy_install.sh && bash -x easy_install.sh
 ```
 
-### Findora Updater - easy_update.sh
+### Run our updater
 Our version of the update_version script for mainnet. We added the option to restart on reboot.  
 
 To check for updates & restart your mainnet Findora node run the following code. If you want to run testnet, just update the word `mainnet` in the code below to be `testnet` instead:
 ```text
 wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/easy_update_mainnet.sh -O easy_update.sh && bash -x easy_update.sh
 ```
+
+### Run our stats
+Download our stats script with:
+```text
+wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/easy_stats.sh -O stats.sh
+```
+
+Run the script with:
+```text
+bash -x stats.sh
+```
+
+### Run our migration tool
+Check out our [guide on migration here](https://guides.easynode.pro/findora/moving).
+
 
 ## Firewall Settings
 Below are our configurations for different software firewalls.  
