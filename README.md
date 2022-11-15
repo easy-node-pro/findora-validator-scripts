@@ -27,7 +27,7 @@ Once you're in the docker group, have sudo access and you've reconnected you are
 wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/easy_install_mainnet.sh -O easy_install.sh && bash -x easy_install.sh
 ```
 
-## Findora Update or Container Restart
+## Findora Update or Container Restart - easy_update.sh
 Our version of the update_version script for mainnet. We added the option to restart on reboot.  
 
 To check for updates & restart your mainnet Findora node run the following code. If you want to run testnet, just update the word `mainnet` in the code below to be `testnet` instead:
@@ -35,7 +35,7 @@ To check for updates & restart your mainnet Findora node run the following code.
 wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/easy_update_mainnet.sh -O easy_update.sh && bash -x easy_update.sh
 ```
 
-## Findora Stats
+## Findora Stats - easy_stats.sh
 Download our stats script with:
 ```text
 wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/easy_stats.sh -O stats.sh
