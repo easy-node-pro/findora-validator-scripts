@@ -2,9 +2,9 @@
 Findora Validator Script Repo!
 
 ## Findora Node Scripts
-Below are our versions of the installer script (node_init.sh) and the update version script (easy_update.sh). Either script can be easily modified to be run on testnet, simply update the `NAMESPACE` variable at the start of either script.  
+Below are our versions of findora scripts with upgrades.
 
-### Findora Installer - easy_install.sh
+## Findora Installer - easy_install.sh
 Easy Node's updated easy_install.sh to create a **brand new server with a brand new wallet** in 1 command. **This script should only be run on a brand new server.**
 
 Here's the modifications we've made to the script:
@@ -27,7 +27,7 @@ Once you're in the docker group, have sudo access and you've reconnected you are
 wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/easy_install_mainnet.sh -O easy_install.sh && bash -x easy_install.sh
 ```
 
-### Run our updater
+## Findora Update or Container Restart
 Our version of the update_version script for mainnet. We added the option to restart on reboot.  
 
 To check for updates & restart your mainnet Findora node run the following code. If you want to run testnet, just update the word `mainnet` in the code below to be `testnet` instead:
@@ -35,7 +35,7 @@ To check for updates & restart your mainnet Findora node run the following code.
 wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/easy_update_mainnet.sh -O easy_update.sh && bash -x easy_update.sh
 ```
 
-### Run our stats
+## Findora Stats
 Download our stats script with:
 ```text
 wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/easy_stats.sh -O stats.sh
@@ -46,11 +46,10 @@ Run the script with:
 bash -x stats.sh
 ```
 
-### Run our migration tool
+## Server Migration Help!
 Check out our [guide on migration here](https://guides.easynode.pro/findora/moving).
 
-
-## Firewall Settings
+## Findora Firewall Settings
 Below are our configurations for different software firewalls.  
 
 ### [ufw.md](/ufw.md)
