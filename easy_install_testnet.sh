@@ -119,6 +119,7 @@ mv "${ROOT_DIR}/snapshot_data/data/ledger" "${ROOT_DIR}/findorad"
 mv "${ROOT_DIR}/snapshot_data/data/tendermint/mainnet/node0/data" "${ROOT_DIR}/tendermint/data"
 
 rm -rf ${ROOT_DIR}/snapshot_data
+rm -rf ${ROOT_DIR}/snapshot
 
 ###################
 # Get checkpoint  #
