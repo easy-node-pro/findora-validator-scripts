@@ -71,4 +71,4 @@ curl 'http://localhost:8669/version'; echo
 curl 'http://localhost:8668/version'; echo
 curl 'http://localhost:8667/version'; echo
 
-echo "Local node data wipde, reloaded, container updated and restarted."
+echo "Local node data wiped, reloaded, container updated and restarted."
