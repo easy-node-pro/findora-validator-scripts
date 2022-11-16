@@ -47,6 +47,7 @@ mv "${ROOT_DIR}/snapshot_data/data/tendermint/mainnet/node0/data" "${ROOT_DIR}/t
 sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/
 
 rm -rf ${ROOT_DIR}/snapshot_data
+rm -rf ${ROOT_DIR}/snapshot
 
 ###################
 # Get checkpoint  #
