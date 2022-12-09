@@ -1,7 +1,4 @@
-# findora-validator-scripts
-Findora Validator Script Repo!
-
-## Findora Node Scripts
+# Findora Validator Node Scripts by EasyNode.PRO
 Below are our versions of findora scripts with upgrades.
 
 ## Findora Installer - easy_install.sh
