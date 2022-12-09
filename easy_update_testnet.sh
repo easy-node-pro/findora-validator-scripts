@@ -1,36 +1,20 @@
 #!/usr/bin/env bash
+set -ex
 USERNAME=$USER
 ENV=prod
 NAMESPACE=testnet
 LIVE_VERSION=$(curl -s https://${ENV}-${NAMESPACE}.${ENV}.findora.org:8668/version | awk -F\  '{print $2}')
 FINDORAD_IMG=findoranetwork/findorad:${LIVE_VERSION}
-CHECKPOINT_URL=https://${ENV}-${NAMESPACE}-us-west-2-ec2-instance.s3.us-west-2.amazonaws.com/${NAMESPACE}/checkpoint
-container_name=findorad
 export ROOT_DIR=/data/findora/${NAMESPACE}
 
+# Reset permissions to avoid problems.
 sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}
-
-###################
-# Get checkpoint  #
-###################
-rm -rf "${ROOT_DIR}/checkpoint.toml"
-wget -O "${ROOT_DIR}/checkpoint.toml" "${CHECKPOINT_URL}"
-
-###################
-# Stop local node #
-###################
-if docker ps -a --format '{{.Names}}' | grep -Eq "^${container_name}\$"; then
-  echo -e "Findorad Container found, stopping container to restart."
-  docker stop findorad
-  docker rm findorad 
-  rm -rf /data/findora/mainnet/tendermint/config/addrbook.json
-else
-  echo 'Findorad container stopped or does not exist, continuing.'
-fi
-
 ###################
 # Run local node #
 ###################
+docker stop findorad
+docker rm findorad 
+rm -rf /data/findora/mainnet/tendermint/config/addrbook.json
 docker run -d \
     -v ${ROOT_DIR}/tendermint:/root/.tendermint \
     -v ${ROOT_DIR}/findorad:/tmp/findora \
