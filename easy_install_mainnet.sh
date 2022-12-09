@@ -40,7 +40,6 @@ set_binaries() {
 ##################
 # Install fn App #
 ##################
-export ROOT_DIR=/data/findora/${NAMESPACE}
 wget https://github.com/FindoraNetwork/findora-wiki-docs/raw/main/.gitbook/assets/fn
 chmod +x fn
 sudo mv fn /usr/local/bin/
