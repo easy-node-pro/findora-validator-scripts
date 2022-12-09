@@ -42,7 +42,7 @@ wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/m
 Our version of a script to upgrade the wallet app `fn` on your server. User account must have root access or will ask for sudo password while running.
 ```text
 # For mainnet or testnet run
-wget -O fn_update.sh && bash -x fn_update.sh
+wget https://raw.githubusercontent.com/easy-node-pro/findora-validator-scripts/main/fn_update.sh -O fn_update.sh && bash -x fn_update.sh
 ```
 
 ## Findora Safety Clean - safety_clean.sh
