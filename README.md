@@ -27,7 +27,7 @@ wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/m
 wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/easy_install_testnet.sh -O easy_install.sh && bash -x easy_install.sh
 ```
 
-## Findora Update or Container Restart - easy_update.sh
+## Findora Container Update or Restart - easy_update.sh
 Our version of the update_version script for Findora.
 
 To check for updates or to simply restart your mainnet Findora node run the following code, choose the code for your network below:
@@ -36,6 +36,13 @@ To check for updates or to simply restart your mainnet Findora node run the foll
 wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/easy_update_mainnet.sh -O easy_update.sh && bash -x easy_update.sh
 # For testnet run
 wget https://raw.githubusercontent.com/easy-node-one/findora-validator-scripts/main/easy_update_testnet.sh -O easy_update.sh && bash -x easy_update.sh
+```
+
+## Findora fn Wallet Update - fn_update.sh
+Our version of a script to upgrade the wallet app `fn` on your server. User account must have root access or will ask for sudo password while running.
+```text
+# For mainnet or testnet run
+wget -O fn_update.sh && bash -x fn_update.sh
 ```
 
 ## Findora Safety Clean - safety_clean.sh
