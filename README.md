@@ -70,7 +70,7 @@ bash -x stats.sh
 ```
 
 ## Server Migration Help!
-Check out our [guide on migration here](https://guides.easynode.pro/findora/moving).
+Migrate is now part of the validator toolbox, download and install it from [the toolbox github](https://github.com/easy-node-pro/validatortoobox_fra) today!
 
 ## Findora Firewall Settings
 Below are our configurations for different software firewalls.  
