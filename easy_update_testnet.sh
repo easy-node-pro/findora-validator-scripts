@@ -6,7 +6,7 @@ NAMESPACE=testnet
 LIVE_VERSION=$(curl -s https://${ENV}-${NAMESPACE}.${ENV}.findora.org:8668/version | awk -F\  '{print $2}')
 FINDORAD_IMG=findoranetwork/findorad:${LIVE_VERSION}
 export ROOT_DIR=/data/findora/${NAMESPACE}
-CONTAINER_NAME = 'findorad'
+CONTAINER_NAME='findorad'
 
 # Reset permissions to avoid problems.
 sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}
