@@ -9,6 +9,19 @@ export ROOT_DIR=/data/findora/${NAMESPACE}
 
 # Reset permissions to avoid problems.
 sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}
+
+###################
+# Stop local node #
+###################
+if docker ps -a --format '{{.Names}}' | grep -Eq "^${container_name}\$"; then
+  echo -e "Findorad Container found, stopping container to restart."
+  docker stop findorad
+  docker rm findorad 
+  rm -rf /data/findora/mainnet/tendermint/config/addrbook.json
+else
+  echo 'Findorad container stopped or does not exist, continuing.'
+fi
+
 ###################
 # Run local node #
 ###################
