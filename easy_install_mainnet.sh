@@ -20,7 +20,7 @@ check_env() {
 
     if ! [ -f "$keypath" ]; then
         echo -e "No tmp.gen.keypair file detected, generating file and creating to ${NAMESPACE}_node.key"
-        fn genkey > tmp.gen.keypair
+        fn genkey > /tmp/tmp.gen.keypair
     fi
 }
 
@@ -49,14 +49,17 @@ sudo mv fn /usr/local/bin/
 ######################################
 sudo mkdir -p /data/findora
 sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
-mkdir -p /data/findora/${NAMESPACE}/tendermint/
+mkdir -p /data/findora/${NAMESPACE}/tendermint/data
+mkdir -p /data/findora/${NAMESPACE}/tendermint/config
+mkdir -p /home/${USER}/findor_backup
 
 ############################
 # Check for existing files #
 ############################
 check_env
 
-cp tmp.gen.keypair /data/findora/${NAMESPACE}/${NAMESPACE}_node.key
+cp /tmp/tmp.gen.keypair /data/findora/${NAMESPACE}/${NAMESPACE}_node.key
+mv /tmp/tmp.gen.keypair /home/${USER}/findor_backup/tmp.gen.keypair
 
 if [[ "Linux" == `uname -s` ]]; then
     set_binaries linux
@@ -76,6 +79,7 @@ node_mnemonic=$(cat ${keypath} | grep 'Mnemonic' | sed 's/^.*Mnemonic:[^ ]* //')
 xfr_pubkey="$(cat ${keypath} | grep 'pub_key' | sed 's/[",]//g' | sed 's/ *pub_key: *//')"
 
 echo $node_mnemonic > ${ROOT_DIR}/node.mnemonic || exit 1
+cp ${ROOT_DIR}/node.mnemonic /home/${user}/findora_backup/node.mnemonic
 
 $FN setup -S ${SERV_URL} || exit 1
 $FN setup -K ${ROOT_DIR}/tendermint/config/priv_validator_key.json || exit 1
@@ -85,11 +89,14 @@ $FN setup -O ${ROOT_DIR}/node.mnemonic || exit 1
 sudo rm -rf ${ROOT_DIR}/findorad || exit 1
 mkdir -p ${ROOT_DIR}/findorad || exit 1
 
-
+# tendermint config
 docker run --rm -v ${ROOT_DIR}/tendermint:/root/.tendermint ${FINDORAD_IMG} init --${NAMESPACE} || exit 1
 
 # reset permissions on tendermint folder after init
 sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/tendermint
+
+# backup priv_validator_key.json
+cp -a ${ROOT_DIR}/tendermint/config /home/${USER}/findor_backup/config
 
 ###################
 # get snapshot    #

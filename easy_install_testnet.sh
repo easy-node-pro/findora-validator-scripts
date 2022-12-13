@@ -59,6 +59,7 @@ mkdir -p /data/findora/${NAMESPACE}/tendermint/config
 check_env
 
 cp tmp.gen.keypair /data/findora/${NAMESPACE}/${NAMESPACE}_node.key
+mv /tmp/tmp.gen.keypair /home/${USER}/findor_backup/tmp.gen.keypair
 
 if [[ "Linux" == `uname -s` ]]; then
     set_binaries linux
@@ -78,6 +79,7 @@ node_mnemonic=$(cat ${keypath} | grep 'Mnemonic' | sed 's/^.*Mnemonic:[^ ]* //')
 xfr_pubkey="$(cat ${keypath} | grep 'pub_key' | sed 's/[",]//g' | sed 's/ *pub_key: *//')"
 
 echo $node_mnemonic > ${ROOT_DIR}/node.mnemonic || exit 1
+cp ${ROOT_DIR}/node.mnemonic /home/${user}/findora_backup/node.mnemonic
 
 $FN setup -S ${SERV_URL} || exit 1
 $FN setup -K ${ROOT_DIR}/tendermint/config/priv_validator_key.json || exit 1
@@ -92,6 +94,9 @@ docker run --rm -v ${ROOT_DIR}/tendermint:/root/.tendermint ${FINDORAD_IMG} init
 
 # reset permissions on tendermint
 sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/tendermint/
+
+# backup priv_validator_key.json
+cp -a ${ROOT_DIR}/tendermint/config /home/${USER}/findor_backup/config
 
 ###################
 # get snapshot    #
@@ -113,8 +118,10 @@ rm -rf "${ROOT_DIR}/tendermint/config/addrbook.json"
 wget -O "${ROOT_DIR}/snapshot" "${CHAINDATA_URL}" 
 mkdir "${ROOT_DIR}/snapshot_data"
 tar zxvf "${ROOT_DIR}/snapshot" -C "${ROOT_DIR}/snapshot_data"
+
 sudo chown -R ${USERNAME}:${USERNAME} /data/findora/${NAMESPACE}/tendermint/data
 sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/snapshot_data/
+
 mv "${ROOT_DIR}/snapshot_data/data/ledger" "${ROOT_DIR}/findorad"
 mv "${ROOT_DIR}/snapshot_data/data/tendermint/mainnet/node0/data" "${ROOT_DIR}/tendermint/data"
 
