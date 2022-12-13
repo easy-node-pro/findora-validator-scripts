@@ -21,7 +21,7 @@ check_env() {
 
     if ! [ -f "$keypath" ]; then
         echo -e "No tmp.gen.keypair file detected, generating file and creating to ${NAMESPACE}_node.key"
-        fn genkey > tmp.gen.keypair
+        fn genkey > /tmp/tmp.gen.keypair
     fi
 }
 
@@ -52,14 +52,14 @@ sudo mkdir -p /data/findora
 sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
 mkdir -p /data/findora/${NAMESPACE}/tendermint/data
 mkdir -p /data/findora/${NAMESPACE}/tendermint/config
-
+mkdir -p /home/${USER}/findora_backup
 ############################
 # Check for existing files #
 ############################
 check_env
 
-cp tmp.gen.keypair /data/findora/${NAMESPACE}/${NAMESPACE}_node.key
-mv /tmp/tmp.gen.keypair /home/${USER}/findor_backup/tmp.gen.keypair
+cp /tmp/tmp.gen.keypair /data/findora/${NAMESPACE}/${NAMESPACE}_node.key
+mv /tmp/tmp.gen.keypair /home/${USER}/findora_backup/tmp.gen.keypair
 
 if [[ "Linux" == `uname -s` ]]; then
     set_binaries linux
@@ -93,10 +93,10 @@ mkdir -p ${ROOT_DIR}/findorad || exit 1
 docker run --rm -v ${ROOT_DIR}/tendermint:/root/.tendermint ${FINDORAD_IMG} init --${NAMESPACE} || exit 1
 
 # reset permissions on tendermint
-sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/tendermint/
+sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/tendermint
 
 # backup priv_validator_key.json
-cp -a ${ROOT_DIR}/tendermint/config /home/${USER}/findor_backup/config
+cp -a ${ROOT_DIR}/tendermint/config /home/${USER}/findora_backup/config
 
 ###################
 # get snapshot    #
@@ -158,7 +158,7 @@ docker run -d \
     --enable-query-service \
     --enable-eth-api-service
 
-sleep 30
+sleep 10
 
 #############################
 # Post Install Stats Report #
