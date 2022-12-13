@@ -9,6 +9,7 @@ CHECKPOINT_URL=https://${ENV}-${NAMESPACE}-us-west-2-ec2-instance.s3.us-west-2.a
 export ROOT_DIR=/data/findora/${NAMESPACE}
 keypath=${ROOT_DIR}/${NAMESPACE}_node.key
 FN=${ROOT_DIR}/bin/fn
+CONTAINER_NAME=findorad
 
 check_env() {
     for i in wget curl; do
@@ -98,6 +99,16 @@ sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/tendermint
 # backup priv_validator_key.json
 cp -a ${ROOT_DIR}/tendermint/config /home/${USER}/findora_backup/config
 
+# stop docker if it happens to be here and you're running this for some reason again.
+if docker ps -a --format '{{.Names}}' | grep -Eq ${CONTAINER_NAME}; then
+  echo -e "Findorad Container found, stopping container to restart."
+  docker stop findorad
+  docker rm findorad 
+  rm -rf /data/findora/mainnet/tendermint/config/addrbook.json
+else
+  echo 'Findorad container stopped or does not exist, continuing.'
+fi
+
 ###################
 # get snapshot    #
 ###################
@@ -137,8 +148,6 @@ wget -O "${ROOT_DIR}/checkpoint.toml" "${CHECKPOINT_URL}"
 ###################
 # Run local node #
 ###################
-docker stop findorad
-docker rm findorad
 docker run -d \
     -v ${ROOT_DIR}/tendermint:/root/.tendermint \
     -v ${ROOT_DIR}/findorad:/tmp/findora \
