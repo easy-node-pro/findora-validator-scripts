@@ -69,6 +69,13 @@ Run the script with:
 bash -x stats.sh
 ```
 
+## Findora Tendermint Reset - easy_tenermint_reset.sh
+If you see the following error in your `docker logs findorad`:
+`open /root/.tendermint/data/priv_validator_state.json: no such file or directory`
+
+Run the Tendermint reset script to reset your tendermint files:
+`wget https://raw.githubusercontent.com/easy-node-pro/findora-validator-scripts/main/easy_tendermint_reset_mainnet.sh -O tendermint_reset_mainnet.sh && bash -x tendermint_reset_mainnet.sh`
+
 ## Server Migration Help!
 Migrate is now part of the validator toolbox, download and install it from [the toolbox github](https://github.com/easy-node-pro/validatortoobox_fra) today!
 
