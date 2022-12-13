@@ -51,7 +51,7 @@ sudo mkdir -p /data/findora
 sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
 mkdir -p /data/findora/${NAMESPACE}/tendermint/data
 mkdir -p /data/findora/${NAMESPACE}/tendermint/config
-mkdir -p /home/${USER}/findor_backup
+mkdir -p /home/${USER}/findora_backup
 
 ############################
 # Check for existing files #
@@ -59,7 +59,7 @@ mkdir -p /home/${USER}/findor_backup
 check_env
 
 cp /tmp/tmp.gen.keypair /data/findora/${NAMESPACE}/${NAMESPACE}_node.key
-mv /tmp/tmp.gen.keypair /home/${USER}/findor_backup/tmp.gen.keypair
+mv /tmp/tmp.gen.keypair /home/${USER}/findora_backup/tmp.gen.keypair
 
 if [[ "Linux" == `uname -s` ]]; then
     set_binaries linux
@@ -96,7 +96,7 @@ docker run --rm -v ${ROOT_DIR}/tendermint:/root/.tendermint ${FINDORAD_IMG} init
 sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/tendermint
 
 # backup priv_validator_key.json
-cp -a ${ROOT_DIR}/tendermint/config /home/${USER}/findor_backup/config
+cp -a ${ROOT_DIR}/tendermint/config /home/${USER}/findora_backup/config
 
 ###################
 # get snapshot    #
