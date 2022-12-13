@@ -49,18 +49,17 @@ sudo mv fn /usr/local/bin/
 # Make Directories & Set Permissions #
 ######################################
 sudo mkdir -p /data/findora
+mkdir -p /home/${USERNAME}/findora_backup
 sudo chown -R ${USERNAME}:${USERNAME} /data/findora/
-mkdir -p /data/findora/${NAMESPACE}/tendermint/data
-mkdir -p /data/findora/${NAMESPACE}/tendermint/config
-mkdir -p /home/${USER}/findora_backup
+mkdir -p /data/findora/${NAMESPACE}
 
 ############################
 # Check for existing files #
 ############################
 check_env
 
-cp /tmp/tmp.gen.keypair /data/findora/${NAMESPACE}/${NAMESPACE}_node.key
-mv /tmp/tmp.gen.keypair /home/${USER}/findora_backup/tmp.gen.keypair
+cp /tmp/tmp.gen.keypair /home/${USERNAME}/findora_backup/tmp.gen.keypair
+mv /tmp/tmp.gen.keypair /data/findora/${NAMESPACE}/${NAMESPACE}_node.key
 
 if [[ "Linux" == `uname -s` ]]; then
     set_binaries linux
@@ -80,15 +79,16 @@ node_mnemonic=$(cat ${keypath} | grep 'Mnemonic' | sed 's/^.*Mnemonic:[^ ]* //')
 xfr_pubkey="$(cat ${keypath} | grep 'pub_key' | sed 's/[",]//g' | sed 's/ *pub_key: *//')"
 
 echo $node_mnemonic > ${ROOT_DIR}/node.mnemonic || exit 1
-cp ${ROOT_DIR}/node.mnemonic /home/${user}/findora_backup/node.mnemonic
+cp ${ROOT_DIR}/node.mnemonic /home/${USERNAME}/findora_backup/node.mnemonic
 
 $FN setup -S ${SERV_URL} || exit 1
 $FN setup -K ${ROOT_DIR}/tendermint/config/priv_validator_key.json || exit 1
 $FN setup -O ${ROOT_DIR}/node.mnemonic || exit 1
 
 # clean old data and config files
-sudo rm -rf ${ROOT_DIR}/findorad || exit 1
-mkdir -p ${ROOT_DIR}/findorad || exit 1
+sudo rm -rf ${ROOT_DIR}/${NAMESPACE} || exit 1
+mkdir -p ${ROOT_DIR}/${NAMESPACE} || exit 1
+
 
 # tendermint config
 docker run --rm -v ${ROOT_DIR}/tendermint:/root/.tendermint ${FINDORAD_IMG} init --${NAMESPACE} || exit 1
@@ -97,13 +97,13 @@ docker run --rm -v ${ROOT_DIR}/tendermint:/root/.tendermint ${FINDORAD_IMG} init
 sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}/tendermint
 
 # backup priv_validator_key.json
-cp -a ${ROOT_DIR}/tendermint/config /home/${USER}/findora_backup/config
+cp -a ${ROOT_DIR}/tendermint/config /home/${USERNAME}/findora_backup/config
 
 # if you're re-running this for some reason, stop and remove findorad
 if docker ps -a --format '{{.Names}}' | grep -Eq ${CONTAINER_NAME}; then
   echo -e "Findorad Container found, stopping container to restart."
   docker stop findorad
-  docker rm findorad 
+  docker rm findorad
   rm -rf /data/findora/mainnet/tendermint/config/addrbook.json
 else
   echo 'Findorad container stopped or does not exist, continuing.'
@@ -118,15 +118,12 @@ wget -O "${ROOT_DIR}/latest" "https://${ENV}-${NAMESPACE}-us-west-2-chain-data-b
 CHAINDATA_URL=$(cut -d , -f 1 "${ROOT_DIR}/latest")
 echo $CHAINDATA_URL
 
-# reset permissions on all files before startup
-sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}
-
-# remove old data 
+# remove old data
 rm -rf "${ROOT_DIR}/findorad"
 rm -rf "${ROOT_DIR}/tendermint/data"
 rm -rf "${ROOT_DIR}/tendermint/config/addrbook.json"
 
-wget -O "${ROOT_DIR}/snapshot" "${CHAINDATA_URL}" 
+wget -O "${ROOT_DIR}/snapshot" "${CHAINDATA_URL}"
 mkdir "${ROOT_DIR}/snapshot_data"
 tar zxvf "${ROOT_DIR}/snapshot" -C "${ROOT_DIR}/snapshot_data"
 
