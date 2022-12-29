@@ -29,7 +29,7 @@ fi
 
 # download latest link and get url
 
-CHAINDATA_URL=[awaiting_url_from_findora]
+CHAINDATA_URL="https://prod-mainnet-us-west-2-chain-data-backup.s3.us-west-2.amazonaws.com/mainnet-20221229060001.tar.gz"
 echo $CHAINDATA_URL
 
 # remove old data 
