@@ -4,8 +4,8 @@ ENV=prod
 NAMESPACE=mainnet
 SERV_URL=https://${ENV}-${NAMESPACE}.${ENV}.findora.org
 LIVE_VERSION=$(curl -s https://${ENV}-${NAMESPACE}.${ENV}.findora.org:8668/version | awk -F\  '{print $2}')
-FINDORAD_IMG=findoranetwork/findorad:${LIVE_VERSION}
-container_name=findorad
+FINDOR_IMG=findoranetwofindorad:${LIVE_VERSION}
+CONTAINER_NAME=findorad
 
 export ROOT_DIR=/data/findora/${NAMESPACE}
 
@@ -14,7 +14,7 @@ sudo chown -R ${USERNAME}:${USERNAME} ${ROOT_DIR}
 ###################
 # Stop local node #
 ###################
-if docker ps -a --format '{{.Names}}' | grep -Eq "^${container_name}\$"; then
+if docker ps -a --format '{{.Names}}' | grep -Eq ${CONTAINER_NAME}; then
   echo -e "Findorad Container found, stopping container to restart."
   docker stop findorad
   docker rm findorad 
@@ -28,8 +28,8 @@ fi
 ###################
 
 # download latest link and get url
-
-CHAINDATA_URL="https://prod-mainnet-us-west-2-chain-data-backup.s3.us-west-2.amazonaws.com/mainnet-20221229060001.tar.gz"
+wget -O "${ROOT_DIR}/latest" "https://${ENV}-${NAMESPACE}-us-west-2-chain-data-backup.s3.us-west-2.amazonaws.com/latest"
+CHAINDATA_URL=$(cut -d , -f 1 "${ROOT_DIR}/latest")
 echo $CHAINDATA_URL
 
 # remove old data 
@@ -71,4 +71,4 @@ curl 'http://localhost:8669/version'; echo
 curl 'http://localhost:8668/version'; echo
 curl 'http://localhost:8667/version'; echo
 
-echo "Local node data wipde, reloaded, container updated and restarted."
+echo "Local node data wiped, reloaded, container updated and restarted."
